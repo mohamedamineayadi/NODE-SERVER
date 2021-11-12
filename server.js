@@ -3,6 +3,13 @@ const mongoose = require('mongoose')
 const morgan   = require('morgan')
 const bodyParser = require('body-parser')
 
+const UserRoute = require ('./routes/user')
+const ContactRoute = require ('./routes/contact')
+const MemeRoute = require ('./routes/meme')
+const PasswordRoute = require ('./routes/password')
+const PointsRoute = require ('./routes/points')
+
+
 
 mongoose.connect('mongodb://localhost:27017/MemeGenerator',{useNewUrlParser: true,useUnifiedTopology: true})
 const db = mongoose.connection
@@ -33,3 +40,9 @@ app.listen(PORT,()=> {
     
 
 })
+
+app.use('/api/user',UserRoute)
+app.use('/api/contact',ContactRoute)
+app.use('/api/meme',MemeRoute)
+app.use('/api/password',PasswordRoute)
+app.use('/api/points',PointsRoute)
