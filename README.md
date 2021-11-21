@@ -53,9 +53,9 @@ Routes -> Containing all Tables routes and links
         Show
         Delete
   then export Module
-  + Creating a js File for every Table in Routes Folder :
++ Creating a js File for every Table in Routes Folder :
     specifiying every file path and creating links for every CRUD 
     exemple : (../api/create)
   
-  + updating server.js file
++ Updating server.js file
      Creating New route variables to put links
