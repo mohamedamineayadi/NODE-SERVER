@@ -8,6 +8,8 @@ const ContactRoute = require ('./routes/contact')
 const MemeRoute = require ('./routes/meme')
 const PasswordRoute = require ('./routes/password')
 const PointsRoute = require ('./routes/points')
+const ReactRoute = require ('./routes/react')
+const AuthRoute = require ('./routes/auth')
 
 
 
@@ -46,3 +48,5 @@ app.use('/api/contact',ContactRoute)
 app.use('/api/meme',MemeRoute)
 app.use('/api/password',PasswordRoute)
 app.use('/api/points',PointsRoute)
+app.use('/api/react',ReactRoute)
+app.use('/api',AuthRoute)

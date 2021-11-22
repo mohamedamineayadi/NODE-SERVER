@@ -1,13 +1,13 @@
-const Points =require ('../models/points')
+const React =require ('../models/react')
 
 
 
 
-//show points
+//show react
 const index =(req,res,next)=> {
 
 
-    Points.find()
+    React.find()
     .then(response => {
 
         res.json({
@@ -24,17 +24,18 @@ const index =(req,res,next)=> {
 
 
 
-//  add points
+//  add react
 const store =(req,res,next)=> {
 
-    let points = new Points({
-        points:req.body.pointCount,
+    let react = new React({
+        react:req.body.ReactState,
+
         
     })
-    points.save()
+    react.save()
     .then(response =>{
         res.json({
-            message: 'points added successfully'
+            message: 'react added successfully'
         })
     })
     .catch(error => {
@@ -47,39 +48,14 @@ const store =(req,res,next)=> {
 
 }
 
-// update points
-
-const update =(req,res,next)=> {
-
-let id = req.body.id
-
-let updateData = {
-    points:req.body.points,
-    
-    
-}
-    Points.findByIdAndUpdate(id,{$set:updateData})
-    .then(() => {
-        res.json({
-            message: 'points updated'
-        })
-})
-.catch(error => {
-    res.json({
-        message: 'error'
-    })
-})
-}
-
-
-// delete points
+// delete react
 
 const destroy =(req,res,next)=> {
     let id = req.body.id
     id.findByIdAndRemove(id)
     .then(()=>{
         req.json({
-            message:'points deleted'
+            message:'react deleted'
 
         })
     })
@@ -91,5 +67,5 @@ const destroy =(req,res,next)=> {
 }
  
 module.exports = {
-    index,store, update ,destroy
+    index,store,destroy
 }

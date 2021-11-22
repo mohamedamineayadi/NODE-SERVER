@@ -43,6 +43,7 @@ const show =(req,res,next)=> {
 
 
 //  add user 
+
 const store =(req,res,next)=> {
 
     let user = new User({
