@@ -1,4 +1,28 @@
-const express  = require('express')
+const express = require("express");
+const PORT = 3000;
+const app = express();
+
+const logger = require("morgan");
+
+app.use(express.json())
+
+const mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost:27017/MemeGenerator").then(()=> {
+    console.log("database is connected")
+}).catch(err => {
+    console.log(console.log(err))
+})
+const userRouter = require("./routes/user");
+const memeRouter = require("./routes/meme");
+app.use("/users", userRouter) 
+app.use("/memes", memeRouter)
+
+
+
+app.listen(PORT, "0.0.0.0", ()=>{
+    console.log("server sstart on port ", PORT)
+})
+/*const express  = require('express')
 const mongoose = require('mongoose')
 const morgan   = require('morgan')
 const bodyParser = require('body-parser')
@@ -49,4 +73,4 @@ app.use('/api/meme',MemeRoute)
 app.use('/api/password',PasswordRoute)
 app.use('/api/points',PointsRoute)
 app.use('/api/react',ReactRoute)
-app.use('/api',AuthRoute)
+app.use('/api',AuthRoute)*/

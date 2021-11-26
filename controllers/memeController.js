@@ -1,8 +1,48 @@
 const Meme =require ('../models/meme')
 
+module.exports = {
+    createMeme: async (req, res) => {
+        const { text } = req.body;
+        const meme = new Meme({ text });
+        await meme.save();
+        res.send(meme);
+      },
+      getAllMeme: async (req, res) => {
+        const memes = await Meme.find();
+        res.send(memes);
+      },
+      deleteMeme: (req, res) => {
+        console.log("en cour");
+        const { id } = req.params;
+        console.log(id);
+        Meme.findByIdAndRemove(id, function (err) {
+          if (!err) {
+            console.log("success");
+          } else {
+            console.log("failed");
+          }
+        });
+        return res.send("deleted");
+      },
+      updateMeme: (req, res) => {
+        const { id } = req.params;
+        console.log(req.body);
+        Meme.updateOne(
+          { _id: id },
+          { text: req.body.text },
+          function (err) {
+            if (err) {
+              console.log("failed");
+            } else {
+              console.log("success update");
+            }
+          }
+        );
+        return res.send("update");
+      },
+}
 
-
-
+/*
 //show memes 
 const index =(req,res,next)=> {
 
@@ -93,4 +133,4 @@ const destroy =(req,res,next)=> {
  
 module.exports = {
     index,store, update ,destroy
-}
+}*/
