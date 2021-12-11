@@ -15,6 +15,17 @@ router.post('/update',memeController.update)
 
 router.post('/destroy',memeController.destroy)*/
 router.post("/create", memeController.createMeme)
+/**
+ * @swagger
+ * /memes/:
+ *   get:
+ *     summary: Get all memes 
+ *     tags: [Memes]
+ *     description: use to get all memes
+ *     responses: 
+ *       '200':
+ *         description: A successful response
+ */
 router.get("/", memeController.getAllMeme)
 router.delete("/delete/:id", memeController.deleteMeme)
 router.put("/update/:id", memeController.updateMeme)

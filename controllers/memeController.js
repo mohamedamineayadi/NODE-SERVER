@@ -2,8 +2,8 @@ const Meme =require ('../models/meme')
 
 module.exports = {
     createMeme: async (req, res) => {
-        const { text } = req.body;
-        const meme = new Meme({ text });
+        const { text,createdby } = req.body;
+        const meme = new Meme({ text,createdby });
         await meme.save();
         res.send(meme);
       },

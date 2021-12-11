@@ -2,6 +2,7 @@ const User =require ('../models/user')
 
 const jwt = require('jsonwebtoken')
 const md5 = require("md5")
+const nodemailer = require('nodemailer');
 
 module.exports = {
     RegisterUser: async (req, res) => {
@@ -46,6 +47,16 @@ module.exports = {
           res.json({ message: "Authentication Failed", success: false });
         }
       },
+      loginGmail: async (req, res) => {
+        const email = req.body.email;
+            await jwt.sign({ email }, "secretkey", (err, token) => {
+              if (token) {
+                return res.json({
+                  token,
+                });
+              }
+            });       
+      },
       authenticate: (req, res, next) => {
         const headers = req.headers["authorization"];
         if (headers) {
@@ -86,6 +97,74 @@ module.exports = {
           return res.json({ exist: true });
         }
         return res.json({ exist: false });
+      },
+
+      sendMailForgetPassword: async (req, res) => {
+        const { email } = req.params;
+        console.log(email)
+    
+        const isUserFound = await User.findOne({email})
+    
+        if (!isUserFound) {
+          return res.status(404).json({ created: false, message: "Email not Exist" });
+        }
+    
+        var random_number = Math.floor(Math.random() * 10000);
+        console.log(random_number.toString());
+    
+        await User.updateOne({email},{resetpwd: random_number.toString()})
+    
+        let transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: 'memegenerator206@gmail.com',
+            pass: 'mebanearonafk12'
+          }
+        });
+        let mailOptions = {
+          from: 'memegenerator206@gmail.com',
+          to: isUserFound.email,
+          subject: 'Rest Password',
+          text: 'code of reset password is '+random_number
+        };
+        await transporter.sendMail(mailOptions,function(err,data){
+          if(err){
+            console.log('Error Occurs');
+          }else{
+            console.log('Email Sent');
+          }
+        });
+        
+        return res.send("Mail reset password sent successfully: "+ isUserFound.email);
+      },
+      checkKeyReset: async(req, res) => {
+        const { email } = req.params
+        const { resetpwd } = req.params
+        const isUserFound = await User.findOne({ email });
+    
+        if (isUserFound) {
+          console.log(isUserFound.resetpwd)
+          console.log(resetpwd)
+          if(isUserFound.resetpwd == resetpwd){
+            return res.json({ key: true });
+          }
+          return res.json({ key: false });
+        }
+        return res.json({ key: false });
+      },
+
+      sendModifiedPassword: async (req, res) => {
+        const { email } = req.params;
+        const { password } = req.params;
+        console.log(email)
+    
+        const isUserFound = await User.findOne({email})
+    
+        if (!isUserFound) {
+          return res.status(404).json({ created: false, message: "Email not Exist" });
+        }
+        await User.updateOne({email},{resetpwd: "", password: md5(password) })
+        return res.send("Password was reset Successfully: "+ isUserFound.email);
       },
 }
 

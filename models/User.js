@@ -24,8 +24,12 @@ const user = new Schema({
         points : {
                 type:Number
         },
-
-
+        valid: {
+                type: Boolean
+        },
+        resetpwd: {
+                type: String
+        }
 
 },{timestamps:true})
 

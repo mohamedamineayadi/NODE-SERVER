@@ -9,7 +9,9 @@ const meme = new Schema({
                 type:String
         
         },
-        
+        createdby :{
+                type:String 
+        },
 
 
 

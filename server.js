@@ -6,6 +6,25 @@ const logger = require("morgan");
 
 app.use(express.json())
 
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: "Backend",
+      description: "information",
+      contact: {
+        name: "Amazing Meme Generator"
+      },
+      servers: ["http://localhost:3000"]
+    }
+  },
+  apis: ["./routes/meme.js"]
+}
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/MemeGenerator").then(()=> {
     console.log("database is connected")
@@ -14,6 +33,7 @@ mongoose.connect("mongodb://localhost:27017/MemeGenerator").then(()=> {
 })
 const userRouter = require("./routes/user");
 const memeRouter = require("./routes/meme");
+app.use("/api-docs",swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 app.use("/users", userRouter) 
 app.use("/memes", memeRouter)
 
