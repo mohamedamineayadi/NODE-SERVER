@@ -49,7 +49,7 @@ mongoose.connect(uri).then(()=> {
 
 app.listen(PORT, function(){
   const today = new Date()
-    console.log("Server started on port "+PORT+" "+today);
+     console.log("Server started on port "+PORT+" "+today);
 })
 
 const userRouter = require("./routes/user");
