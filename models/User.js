@@ -3,10 +3,12 @@ var Schema =mongoose.Schema
 
 const user = new Schema({
         name :{ 
-                type:String
+                type:String,
+                required : false
         },
         surname :{
-                type:String
+                type:String,
+                required : false
         
         },
         email :{
@@ -16,10 +18,12 @@ const user = new Schema({
                 type:String
         },
         photo :{
-                type:String
+                type:String,
+                required : false
         },
         birthDate: {
-                type:String
+                type:String,
+                required : false
         },
         points : {
                 type:Number

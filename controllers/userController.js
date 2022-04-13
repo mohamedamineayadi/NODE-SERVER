@@ -24,7 +24,7 @@ module.exports = {
         });
     
         await user.save();
-        res.json(user);
+        res.status(200).json(user);
       },
       login: async (req, res) => {
         const password = req.body.password;
@@ -34,17 +34,17 @@ module.exports = {
           if (md5(password) == user.password) {
             jwt.sign({ email }, "secretkey", (err, token) => {
               if (token) {
-                return res.json({
+                return res.status(200).json({
                   token,
                 });
               }
             });
             //return res.json(user);
           } else {
-            res.json({ message: "Authentication Failed", success: false });
+            res.status(400).json({ message: "Authentication Failed", success: false });
           }
         } else {
-          res.json({ message: "Authentication Failed", success: false });
+          res.status(400).json({ message: "Authentication Failed", success: false });
         }
       },
       loginGmail: async (req, res) => {
