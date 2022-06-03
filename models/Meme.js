@@ -1,21 +1,25 @@
-var mongoose=require('mongoose')
-var Schema =mongoose.Schema
+var mongoose = require('mongoose')
+var Schema = mongoose.Schema
 
 const meme = new Schema({
-        text :{ 
-                type:String
-        },
-        image :{
-                type:String
-        
-        },
-        createdby :{
-                type:String 
-        },
+    text: {
+        type: String
+    },
+    image: {
+        type: String
 
+    },
+    createdBy: {
+        type: String
+    },
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Like"
+    }],
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment"
+    }],
+}, {timestamps: true})
 
-
-},{timestamps:true})
-
-const Meme =mongoose.model('Meme',meme)
-module.exports = Meme
+module.exports = mongoose.model('Meme', meme)

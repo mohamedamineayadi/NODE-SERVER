@@ -5,22 +5,23 @@ const app = express();
 const logger = require("morgan");
 
 app.use(express.json())
+app.use(logger('dev'))
 
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
 const swaggerOptions = {
-  swaggerDefinition: {
-    info: {
-      title: "Backend",
-      description: "information",
-      contact: {
-        name: "Amazing Meme Generator"
-      },
-      servers: ["http://localhost:3000"]
-    }
-  },
-  apis: ["./routes/meme.js"]
+    swaggerDefinition: {
+        info: {
+            title: "Backend",
+            description: "information",
+            contact: {
+                name: "Amazing Meme Generator"
+            },
+            servers: ["http://localhost:3000"]
+        }
+    },
+    apis: ["./routes/meme.js"]
 }
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
@@ -28,17 +29,16 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 const mongoose = require("mongoose");
 
 
-
 const PORT = process.env.PORT || 3000;
 
 
 const uri =
-"mongodb+srv://amine:1234@cluster0.9jpmk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+    "mongodb+srv://amine:1234@cluster0.9jpmk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
-mongoose.connect(uri).then(()=> {
-  console.log("database is connected mongo en ligne")
+mongoose.connect(uri).then(() => {
+    console.log("database is connected mongo en ligne")
 }).catch(err => {
-  console.log(console.log(err))
+    console.log(err)
 });
 
 /*mongoose.connect("mongodb://localhost:27017/MemeGenerator").then(()=> {
@@ -47,19 +47,20 @@ mongoose.connect(uri).then(()=> {
     console.log(console.log(err))
 })*/
 
-app.listen(PORT, function(){
-  const today = new Date()
-      console.log("Server started on port "+PORT+" "+today);
+app.listen(PORT, function () {
+    const today = new Date()
+    console.log("Server started on port " + PORT + " " + today);
 })
 
 const userRouter = require("./routes/user");
 const memeRouter = require("./routes/meme");
-app.use("/api-docs",swaggerUi.serve, swaggerUi.setup(swaggerDocs))
-app.use("/users", userRouter) 
+const path = require("path");
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+app.use("/users", userRouter)
 app.use("/memes", memeRouter)
-app.use(express.static('uploads/images'))
-
-
+app.use("/like", require("./routes/like"))
+app.use("/comment", require("./routes/comment"))
+app.use("/image", express.static('uploads/images'))
 
 
 /*const express  = require('express')

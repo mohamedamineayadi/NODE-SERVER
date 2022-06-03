@@ -1,45 +1,54 @@
-const Meme =require ('../models/meme')
+const Meme = require('../models/meme')
 
 module.exports = {
     createMeme: async (req, res) => {
-        const { text,createdby } = req.body;
-        const meme = new Meme({ text,createdby,image: req.file.filename});
+        const {text, createdBy} = req.body;
+        let t = req.body.text.toString().substring(1, req.body.text.toString().length - 1);
+
+        const meme = new Meme({text: t, createdBy, image: req.file.filename});
+        console.log(meme)
         await meme.save();
-        res.send(meme);
-      },
-      getAllMeme: async (req, res) => {
-        const memes = await Meme.find();
-        res.send(memes);
-      },
-      deleteMeme: (req, res) => {
+        res.status(200).send(meme);
+    },
+    getAllMeme: async (req, res) => {
+        const memes = await Meme.find().populate("likes comments");
+        res.status(200).send(memes);
+    },
+
+    getAllMemeAlt: async (req, res) => {
+        const memes = await Meme.find().populate("likes comments");
+        res.status(200).send({memes});
+    },
+
+    deleteMeme: (req, res) => {
         console.log("en cour");
-        const { id } = req.params;
+        const {id} = req.params;
         console.log(id);
         Meme.findByIdAndRemove(id, function (err) {
-          if (!err) {
-            console.log("success");
-          } else {
-            console.log("failed");
-          }
+            if (!err) {
+                console.log("success");
+            } else {
+                console.log("failed");
+            }
         });
         return res.send("deleted");
-      },
-      updateMeme: (req, res) => {
-        const { id } = req.params;
+    },
+    updateMeme: (req, res) => {
+        const {id} = req.params;
         console.log(req.body);
         Meme.updateOne(
-          { _id: id },
-          { text: req.body.text },
-          function (err) {
-            if (err) {
-              console.log("failed");
-            } else {
-              console.log("success update");
+            {_id: id},
+            {text: req.body.text},
+            function (err) {
+                if (err) {
+                    console.log("failed");
+                } else {
+                    console.log("success update");
+                }
             }
-          }
         );
         return res.send("update");
-      },
+    },
 }
 
 /*
